@@ -25,7 +25,11 @@ SECRET_KEY = 'django-insecure-6*c)t+x+0g!u^9c_d%=$qcn#&w&)ut5$!7s$9way29v(g5yxd5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'meal-tracker-django.herokuapp.com',
+]
 
 
 # Application definition
