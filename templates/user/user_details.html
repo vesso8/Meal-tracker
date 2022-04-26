@@ -3,13 +3,13 @@
 <!--Details Page-->
 <section id="detailsPage">
     <div class="wrapper">
-            {% if not object.picture %}
+            {% if not object.picture.url %}
                 <div class="profilePage">
                 <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
                      alt="Profile Image">
             {% else %}
                 <div class="profilePage">
-                <img src="{{ object.picture }}"
+                <img src="{{ object.picture.url }}"
                      alt="Profile Image">
             {% endif %}
         </div>
@@ -22,12 +22,9 @@
         </div>
 
         <div class="actionBtnProfile">
-            <!-- Button for Deleting the Profile -->
-{#            <a href="{% url 'delete profile' %}" class="remove">Delete</a>#}
             <a href="{% url 'user edit' object.user.id %}" class="edit">Edit</a>
             <a href="{% url 'change password' object.user.id %}" class="change-password">Change Password</a>
             <a href="{% url 'user delete' object.user.id %}" class="remove">Delete</a>
-{#            <a href="{% url 'logout' %}" class="logout">Logout</a>#}
         </div>
 
     </div>
