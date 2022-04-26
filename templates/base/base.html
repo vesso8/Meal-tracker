@@ -1,0 +1,50 @@
+{% load static %}
+{% load user_profile %}
+{% user_profile as user_profile %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>Meal Tracker</title>
+    <!-- Static Load -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+</head>
+
+<body>
+<div id="box">
+
+    <!-- Navigation Bar -->
+    <header>
+        <nav>
+    <link rel="icon" type="image/x-icon" href="{% static 'images/food_icon.jpg' %}">
+
+            <a href="{% url 'home' %}">Home</a><ul></ul>
+            <ul>
+                <!--Only for user with created profile-->
+                {% if request.user|has_group:"Staff" or request.user|has_group:"Administrator" %}
+                    <li><a href="{% url 'add menu' %}">Add Menu</a></li>
+                {% endif %}
+                {% if request.user.is_authenticated %}
+                    <li><a href="{% url 'select food' %}">Select Food</a></li>
+                    <li><a href="{% url 'add food' %}">Add Food</a></li>
+                    <li><a href="{% url 'calorie counter' %}">Calorie Counter</a></li>
+                    <li><a href="{% url 'meal tracker' %}">Meal Tracker</a></li>
+                    <li><a href="{% url 'user details' user_profile.id %}">Profile</a></li>
+                    <li class="right nav_li"><a href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                    <li class="right nav_li"><a href="{% url 'login' %}">Login</a></li>
+                    <li class="right nav_li"><a href="{% url 'register' %}">Register</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+    <!-- End Navigation Bar -->
+
+    {% block page_content %}
+    {% endblock %}
+
+</div>
+</body>
+</html>

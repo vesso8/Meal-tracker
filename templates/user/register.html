@@ -1,0 +1,30 @@
+{% extends 'base/base.html' %}
+{% block page_content %}
+    <!--Create Page-->
+    <section id="create-page" class="createPage">
+        <form id="create-form" action="{% url 'register' %}" method="post">
+            <form>
+                <fieldset>
+                    <legend>Register User</legend>
+                    <div class="container">
+                        {% csrf_token %}
+                        <label>Email:</label>
+                        {{ form.email }}
+                        <label>First Name:</label>
+                        {{ form.first_name }}
+                        <label>Last Name</label>
+                        {{ form.last_name }}
+                        <label>Password:</label>
+                        {{ form.password1 }}
+                        <label>Confirm Password:</label>
+                        {{ form.password2 }}
+                        {{ form.errors }}
+
+                        <!-- Button for Adding Album -->
+                        <button class="add-album" type="submit">Register</button>
+                    </div>
+                </fieldset>
+            </form>
+        </form>
+    </section>
+{% endblock %}

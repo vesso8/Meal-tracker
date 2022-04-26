@@ -1,0 +1,46 @@
+{% extends 'base/base.html' %}
+
+{% block page_content %}
+    {% load static %}
+             <section id="create-page" class="createPage-select">
+        <form id="create-form" action="{% url 'select food' %}" method="post">
+            <form>
+                <fieldset>
+                    <legend>Select Food</legend>
+                    <div class="container">
+
+
+                        {{ form }}
+                        {% csrf_token %}
+
+                        <button class="add-album" type="submit">Select</button>
+                    </div>
+                </fieldset>
+            </form>
+        </form>
+    </section>
+    <div class="row mt-5">
+         <table class="table-food-items table-food-items-bordered text-center">
+         <caption style="font-size: xx-large">All Food Items Added</caption>
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Food Name</th>
+                    <th scope="col">Type of Food</th>
+                    <th scope="col">Calories</th>
+                    <th scope="col">Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for food in food_items %}
+                <tr>
+                    <td>{{ food.name }}</td>
+                    <td>{{ food.type_of_food }}</td>
+                    <td>{{ food.calorie }}</td>
+                    <td>{{ food.quantity }}</td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+     </div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'base/base.html' %}
+
+{% block page_content %}
+    <section id="create-page" class="createPage-calorie-goal">
+        <form id="create-form" action="{% url 'meal tracker' %}" method="post">
+            <form>
+                <fieldset>
+                    <legend>Calorie Goal For Today</legend>
+                    <div class="container">
+
+
+                        {{ form }}
+                        {% csrf_token %}
+
+                        <button class="add-album" type="submit" value="select">Select</button>
+                    </div>
+                </fieldset>
+            </form>
+        </form>
+    </section>
+    <table class="table-records table-bordered table-hover">
+             <caption style="font-size: xx-large">Records From The Past Week</caption>
+                <thead class="thead-dark">
+                <tr class="text-center">
+                    <th scope="col">Date</th>
+                    <th scope="col">Calorie Consumed</th>
+                    <th scope="col">Calorie Goal</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for record in records %}
+                <tr>
+                    <td>{{ record.date }}</td>
+                    <td>{{ record.total_calorie }}</td>
+                    <td>{{ record.calorie_goal }}</td>
+
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+     <div class="row mt-5">
+         <table class="table-food-items table-food-items-bordered text-center">
+         <caption style="font-size: xx-large">All Food Items</caption>
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Food Name</th>
+                    <th scope="col">Type of Food</th>
+                    <th scope="col">Calories</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Update</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for food in food_items %}
+                <tr>
+                    <td>{{ food.name }}</td>
+                    <td>{{ food.type_of_food }}</td>
+                    <td>{{ food.calorie }}</td>
+                    <td>{{ food.quantity }}</td>
+                    <td><a class="btn btn-sm btn-info" href="{% url 'update food' food.pk%}">Update</a></td>
+                    <td><a class="btn btn-sm " href="{% url 'delete food' food.pk %}">Delete</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+{% endblock %}

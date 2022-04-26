@@ -1,0 +1,23 @@
+{% extends 'base/base.html' %}
+{% block page_content %}
+    <!-- Delete Profile Page-->
+    <section id="detailsPage" class="delete-profile">
+        <form id="delete-form" action="{% url 'user delete' object.id %}" method="post">
+
+            <div class="wrapper">
+                <div class="profileText">
+
+                    <!-- Delete Profile Form -->
+                    <h1>Are you sure you want to delete your profile?</h1>
+                    <form>
+                        {{ form }}
+                        {% csrf_token %}
+                        <button class="edit-album" type="submit">Yes, Delete</button>
+                    </form>
+                </div>
+                <div class="col-lg-3"></div>
+                <a href="{% url 'home' %}">No, go to Home Page!</a>
+            </div>
+        </form>
+    </section>
+{% endblock %}

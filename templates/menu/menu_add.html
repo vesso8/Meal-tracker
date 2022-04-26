@@ -1,0 +1,21 @@
+{% extends 'base/base.html' %}
+{% block page_content %}
+    <!--Create Page-->
+    <section id="create-page" class="createPage">
+        <form id="create-form" action="{% url 'add menu' %}" method="post" enctype="multipart/form-data">
+            <form>
+                <fieldset>
+                    <legend>Add Menu</legend>
+                    <div class="container">
+
+
+                        {{ form }}
+                        {% csrf_token %}
+
+                        <button class="add-album" type="submit">Add</button>
+                    </div>
+                </fieldset>
+            </form>
+        </form>
+    </section>
+{% endblock %}

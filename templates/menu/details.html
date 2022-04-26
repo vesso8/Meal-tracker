@@ -1,0 +1,43 @@
+{% extends 'base/base.html' %}
+{% block page_content %}
+{% load user_profile %}
+{% user_profile as user_profile %}
+
+<!--Details Page-->
+<section id="detailsPage">
+    <div class="wrapper">
+
+        <div class="albumCover">
+            <!-- Album Image -->
+            <img src="{{ menu.image.url }}" alt="Cover Image">
+        </div>
+
+        <div class="albumInfo">
+
+            <div class="albumText">
+                <!-- Album Info -->
+                <h1>Title: {{ menu.title }}</h1>
+                <h3>Breakfast: {{ menu.breakfast }}</h3>
+                <h3>Snack 1: {{ menu.snack_1 }}</h3>
+                <h3>Lunch: {{ menu.lunch }}</h3>
+                <h3>Snack 2: {{ menu.snack_2 }}</h3>
+                <h3>Dinner: {{ menu.dinner }}</h3>
+                <h3>Snack 3: {{ menu.snack_3 }}</h3>
+                <h1>Calories: {{ menu.calories }}</h1>
+            </div>
+
+            <div class="actionBtn">
+{#                <!-- Album Buttons -->#}
+                {% if request.user|has_group:"Staff" %}
+                    <a href="{% url 'edit menu' menu.pk %}" class="edit">Edit</a>
+                {% elif request.user|has_group:"Administrator" %}
+                    <a href="{% url 'edit menu' menu.pk %}" class="edit">Edit</a>
+                    <a href="{% url 'delete menu' menu.pk %}" class="remove">Delete</a>
+                {% endif %}
+{#            </div>#}
+
+        </div>
+    </div>
+    </div>
+</section>
+{% endblock %}

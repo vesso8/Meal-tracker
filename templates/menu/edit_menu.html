@@ -1,0 +1,40 @@
+{% extends 'base/base.html' %}
+{% block page_content %}
+<!--Edit Page-->
+<section id="edit-page" class="editPage">
+<form id="edit-form" action="{% url 'edit menu' menu.pk %}" method="post">
+    <form>
+        <fieldset>
+            <legend>Edit Menu</legend>
+            <div class="container">
+
+                {% csrf_token %}
+                <label>Title:</label>
+                {{ form.title }}
+                <label>Breakfast</label>
+                {{ form.breakfast }}
+                {% if form.snack_1 %}
+                    <label>Snack 1:</label>
+                    {{ form.snack_1 }}
+                {% endif %}
+                <label>Lunch</label>
+                {{ form.lunch }}
+                {% if form.snack_2 %}
+                    <label>Snack 2:</label>
+                    {{ form.snack_2 }}
+                {% endif %}
+                <label>Dinner:</label>
+                {{ form.dinner }}
+                {% if form.snack_1 %}
+                    <label>Snack 3:</label>
+                    {{ form.snack_3 }}
+                {% endif %}
+                <label>Calories:</label>
+                {{ form.calories }}
+                <button class="edit-album" type="submit">Edit</button>
+            </div>
+        </fieldset>
+    </form>
+    </form>
+</section>
+{% endblock %}

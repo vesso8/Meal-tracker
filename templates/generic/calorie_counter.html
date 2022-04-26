@@ -1,0 +1,70 @@
+{% extends 'base/base.html' %}
+{% block page_content %}
+    {% load static %}
+
+
+    <div class="card-box-left">
+        <div>
+            <div class="text-center">
+                <h2 class="name">Total Calories Consumed Today</h2>
+                <h2 class="calories">{{ total_calorie }}</h2>
+            </div>
+            <div class="btn-group">
+                {#                        <a href="{% url 'menu details' menu.pk %}">Details</a>#}
+            </div>
+        </div>
+    </div>
+    <div class="card-box-right">
+        <div>
+            <div class="text-center">
+                <h2 class="name">Calorie Goal For Today</h2>
+                {#                        <p class="artist">Ingredients: {{ menu.ingredients }}</p>#}
+                <h2 class="calories">{{ calorie_goal }}</h2>
+            </div>
+            <div class="btn-group">
+                {#                        <a href="{% url 'menu details' menu.pk %}">Details</a>#}
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card-box-big">
+        <div>
+            <div class="text-center">
+                {% if calorie_goal_status > 0 %}
+                    <h2 class="name">You need {{ calorie_goal_status }} calories more to reach your goal</h2>
+                {% elif calorie_goal == 0 %}
+                    <h2 class="name">Enter your calorie goal for the day</h2>
+                            <form id="search" action="{% url 'meal tracker' %}" method="get">
+                        <button class="add-calorie-goal" type="submit" value="select">Enter</button>
+                            </form>
+                {% else %}
+                    <h2 class="name">You surpassed your goal by {{ over_calorie }} calories </h2>
+                {% endif %}
+            </div>
+        </div>
+            <table class="table table-bordered table-hover">
+                <caption style="font-size: xx-large">All Food Consumed Today</caption>
+                <thead class="thead-dark">
+                <tr class="text-center">
+                    <th scope="col">Food</th>
+                    <th scope="col">Type of Food</th>
+                    <th scope="col">Calorie</th>
+                    <th scope="col">Count</th>
+                </tr>
+                </thead>
+                <tbody>
+
+
+                {% for food in food_selected_today %}
+                    <tr class="text-center">
+                        <td> {{ food.food.name }}</td>
+                        <td> {{ food.food.type_of_food }}</td>
+                        <td> {{ food.calories_amount }}</td>
+                        <td> {{ food.amount }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+    </div>
+{% endblock %}
