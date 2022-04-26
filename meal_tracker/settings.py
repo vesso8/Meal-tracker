@@ -81,11 +81,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'meal_tracker.wsgi.application'
 
-DATABASES = None
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-DEFAULT_DATABASE_CONFIG = {
+DATABASES  = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
             'HOST': os.getenv('DB_HOST', '127.0.0.1'),
@@ -95,9 +94,6 @@ DEFAULT_DATABASE_CONFIG = {
             'PASSWORD': os.getenv('DB_PASSWORD', 'mysecretpassword'),
         },
     }
-DATABASES = {
-    'default': DEFAULT_DATABASE_CONFIG,
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
