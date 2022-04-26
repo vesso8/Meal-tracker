@@ -8,14 +8,12 @@
     <div class="wrapper">
 
         <div class="albumCover">
-            <!-- Album Image -->
             <img src="{{ menu.image.url }}" alt="Cover Image">
         </div>
 
         <div class="albumInfo">
 
             <div class="albumText">
-                <!-- Album Info -->
                 <h1>Title: {{ menu.title }}</h1>
                 <h3>Breakfast: {{ menu.breakfast }}</h3>
                 <h3>Snack 1: {{ menu.snack_1 }}</h3>
@@ -27,7 +25,6 @@
             </div>
 
             <div class="actionBtn">
-{#                <!-- Album Buttons -->#}
                 {% if request.user|has_group:"Staff" %}
                     <a href="{% url 'edit menu' menu.pk %}" class="edit">Edit</a>
                 {% elif request.user|has_group:"Administrator" %}
