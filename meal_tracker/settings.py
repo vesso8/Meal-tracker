@@ -81,10 +81,10 @@ WSGI_APPLICATION = 'meal_tracker.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'meal_tracker_exam_db',
-        'USER': 'postgres',
-        'PASSWORD': 'mysecretpassword',
-        'HOST': '127.0.0.1',
+        'NAME': 'db4gdrq9ogfgpe',
+        'USER': 'ycpbbwpwojincp',
+        'PASSWORD': 'c9b7c4f3aac51e239665fd01d47b7d832883631e74aa7a7a1e40deff81c0ede0',
+        'HOST': 'ec2-52-48-159-67.eu-west-1.compute.amazonaws.com',
         'PORT': '5432',
     }
 }
