@@ -31,7 +31,7 @@
                     <li><a href="{% url 'add food' %}">Add Food</a></li>
                     <li><a href="{% url 'calorie counter' %}">Calorie Counter</a></li>
                     <li><a href="{% url 'meal tracker' %}">Meal Tracker</a></li>
-                    <li><a href="{% url 'user details' user_profile.id %}">Profile</a></li>
+                    <li><a href="{% url 'user details' user.id %}">Profile</a></li>
                     <li class="right nav_li"><a href="{% url 'logout' %}">Logout</a></li>
                 {% else %}
                     <li class="right nav_li"><a href="{% url 'login' %}">Login</a></li>
