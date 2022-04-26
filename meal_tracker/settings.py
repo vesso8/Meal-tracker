@@ -95,6 +95,7 @@ DATABASES  = {
             'PASSWORD': os.environ.get('DB_PASSWORD', 'mysecretpassword'),
         },
     }
+
 LOGGING_LEVEL = 'INFO'
 
 LOGGING = {
