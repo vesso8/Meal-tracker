@@ -9,11 +9,14 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+import os
+from os import getenv
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 import cloudinary
+
+from meal_tracker.utils import is_production
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -22,16 +25,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-6*c)t+x+0g!u^9c_d%=$qcn#&w&)ut5$!7s$9way29v(g5yxd5'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
+APP_ENVIRONMENT = os.getenv('APP_ENVIRONMENT')
 
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    'meal-tracker-django.herokuapp.com',
-]
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(' ')
+
 
 
 # Application definition
@@ -83,36 +84,40 @@ WSGI_APPLICATION = 'meal_tracker.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
+DEFAULT_DATABASE_CONFIG = None
+DEFAULT_DATABASE_CONFIG = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'HOST': os.getenv('DB_HOST', '127.0.0.1'),
+            'PORT': os.getenv('DB_PORT', '5432'),
+            'NAME': os.getenv('DB_NAME', 'meal_tracker_exam_db'),
+            'USER': os.getenv('DB_USER', 'postgres'),
+            'PASSWORD': os.getenv('DB_PASSWORD', 'mysecretpassword'),
+        },
+    }
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'db4gdrq9ogfgpe',
-        'USER': 'ycpbbwpwojincp',
-        'PASSWORD': 'c9b7c4f3aac51e239665fd01d47b7d832883631e74aa7a7a1e40deff81c0ede0',
-        'HOST': 'ec2-52-48-159-67.eu-west-1.compute.amazonaws.com',
-        'PORT': '5432',
-    }
+    'default': DEFAULT_DATABASE_CONFIG,
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
-
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
+AUTH_PASSWORD_VALIDATORS = []
+if is_production():
+    AUTH_PASSWORD_VALIDATORS.extend([
+        {
+            'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        },
+        {
+            'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        },
+        {
+            'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        },
+        {
+            'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        },
+    ])
 
 
 # Internationalization
@@ -148,7 +153,32 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+LOGGING_LEVEL = 'DEBUG'
 
+
+
+if is_production():
+    LOGGING_LEVEL = 'INFO'
+# elif is_test():
+#     LOGGING_LEVEL = 'CRITICAL'
+
+LOGGING = {
+    'version': 1,
+    'handlers': {
+        'console': {
+            # DEBUG, WARNING , INFO, ERROR, CRITICAL
+            'level': LOGGING_LEVEL,
+            'filters': [],
+            'class': 'logging.StreamHandler',
+        }
+    },
+    'loggers': {
+        'django.db.backends': {
+            'level': 'INFO',
+            'handlers': ['console'],
+        }
+    }
+}
 AUTH_USER_MODEL = 'auth_user.AuthUser'
 
 cloudinary.config(
