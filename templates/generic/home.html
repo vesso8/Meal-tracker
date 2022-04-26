@@ -12,19 +12,19 @@
 
         <h1>Menus</h1>
 
-        {% for menu in all_menus %}
-
-            <div class="card-box">
-                <img src="{{ menu.image.url }}" alt="Cover Image">
-                <div>
-                    <h1 class="name">{{ menu.title }}</h1>
-                    <h1 class="name">Calories: {{ menu.calories }}</h1>
-                    </div>
-                    <div class="btn-group">
-                        <a href="{% url 'menu details' menu.pk %}">Details</a>
-                    </div>
-                </div>
-            <!-- End First Card-Box in catalog -->
-        {% endfor %}
+{#        {% for menu in all_menus %}#}
+{##}
+{#            <div class="card-box">#}
+{#                <img src="{{ menu.image.url }}" alt="Cover Image">#}
+{#                <div>#}
+{#                    <h1 class="name">{{ menu.title }}</h1>#}
+{#                    <h1 class="name">Calories: {{ menu.calories }}</h1>#}
+{#                    </div>#}
+{#                    <div class="btn-group">#}
+{#                        <a href="{% url 'menu details' menu.pk %}">Details</a>#}
+{#                    </div>#}
+{#                </div>#}
+{#            <!-- End First Card-Box in catalog -->#}
+{#        {% endfor %}#}
     </section>
 {% endblock %}
