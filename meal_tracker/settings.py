@@ -29,9 +29,9 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
-APP_ENVIRONMENT = os.getenv('APP_ENVIRONMENT')
+APP_ENVIRONMENT = os.getenv('APP_ENVIRONMENT', 'Development')
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(' ')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(' ')
 
 
 
@@ -177,7 +177,7 @@ LOGGING = {
 AUTH_USER_MODEL = 'auth_user.AuthUser'
 
 cloudinary.config(
-  cloud_name = ("hg67a62fo"),
-  api_key = ("237774949831924"),
-  api_secret = ("8nX_wkglJEi2qdfeNfOSn-ogoF8"),
+  cloud_name = os.getenv('CLOUDINARY_CLOUD_NAME0', None),
+  api_key = os.getenv('CLOUDINARY_API_KEY', None),
+  api_secret = os.getenv('CLOUDINARY_API_SECRET', None),
 )

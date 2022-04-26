@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.db import models
-
+from cloudinary import models as cloudinary_models
 from meal_tracker.auth_user.models import AuthUser
 
 UserModel = get_user_model()
@@ -102,7 +102,7 @@ class Menu(models.Model):
         null=True,
         blank=True,
     )
-    image = models.ImageField()
+    image = cloudinary_models.CloudinaryField('image')
     calories = models.IntegerField()
 
     def __str__(self):

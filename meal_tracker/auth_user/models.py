@@ -2,6 +2,7 @@ from django.contrib.auth import models as auth_models
 from django.db import models
 
 from meal_tracker.auth_user import managers as custom_managers
+from cloudinary import models as cloudinary_models
 
 
 class AuthUser(auth_models.AbstractUser, auth_models.PermissionsMixin):
@@ -33,8 +34,8 @@ class Profile(models.Model):
     FIRST_NAME_MAX_LENGTH = 15
     LAST_NAME_MAX_LENGTH = 15
 
-    picture = models.ImageField(
-        upload_to='user_images/',
+    picture = cloudinary_models.CloudinaryField(
+        'image',
         null= True,
         blank=True
     )
