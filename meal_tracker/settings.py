@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY', 'sk')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
@@ -148,32 +148,7 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-LOGGING_LEVEL = 'DEBUG'
 
-
-
-if is_production():
-    LOGGING_LEVEL = 'INFO'
-# elif is_test():
-#     LOGGING_LEVEL = 'CRITICAL'
-
-LOGGING = {
-    'version': 1,
-    'handlers': {
-        'console': {
-            # DEBUG, WARNING , INFO, ERROR, CRITICAL
-            'level': LOGGING_LEVEL,
-            'filters': [],
-            'class': 'logging.StreamHandler',
-        }
-    },
-    'loggers': {
-        'django.db.backends': {
-            'level': 'INFO',
-            'handlers': ['console'],
-        }
-    }
-}
 AUTH_USER_MODEL = 'auth_user.AuthUser'
 
 cloudinary.config(
