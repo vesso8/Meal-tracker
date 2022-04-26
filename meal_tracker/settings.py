@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+import cloudinary
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -148,3 +150,9 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'auth_user.AuthUser'
+
+cloudinary.config(
+  cloud_name = ("hg67a62fo"),
+  api_key = ("237774949831924"),
+  api_secret = ("8nX_wkglJEi2qdfeNfOSn-ogoF8"),
+)
