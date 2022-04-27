@@ -2,7 +2,6 @@ import os
 from os import getenv
 from pathlib import Path
 import cloudinary
-from meal_tracker.utils import is_production
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -10,12 +9,12 @@ SECRET_KEY = os.getenv('SECRET_KEY', '')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 APP_ENVIRONMENT = os.getenv('APP_ENVIRONMENT', '')
-ALLOWED_HOSTS = ['*']
-# ALLOWED_HOSTS = [
-#     'localhost',
-#     '127.0.0.1',
-#     'meal-tracker-django.herokuapp.com',
-# ]
+# ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'meal-tracker-django.herokuapp.com',
+]
 
 
 
@@ -95,22 +94,20 @@ LOGGING = {
     }
 }
 
-AUTH_PASSWORD_VALIDATORS = []
-if is_production():
-    AUTH_PASSWORD_VALIDATORS.extend([
-        {
-            'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-        },
-        {
-            'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-        },
-        {
-            'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-        },
-        {
-            'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-        },
-    ])
+AUTH_PASSWORD_VALIDATORS =[
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
 
 LANGUAGE_CODE = 'en-us'
 
