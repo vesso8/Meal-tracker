@@ -9,11 +9,12 @@ SECRET_KEY = os.getenv('SECRET_KEY', '')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 APP_ENVIRONMENT = os.getenv('APP_ENVIRONMENT', '')
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    'meal-tracker-django.herokuapp.com'
-]
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(' ')
+# ALLOWED_HOSTS = [
+#     'localhost',
+#     '127.0.0.1',
+#     'meal-tracker-django.herokuapp.com'
+# ]
 
 
 INSTALLED_APPS = [
