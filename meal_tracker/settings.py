@@ -12,10 +12,8 @@ APP_ENVIRONMENT = os.getenv('APP_ENVIRONMENT', '')
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    'meal-tracker-django.herokuapp.com',
+    'meal-tracker-django.herokuapp.com'
 ]
-
-
 
 
 INSTALLED_APPS = [
