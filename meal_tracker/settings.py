@@ -9,7 +9,6 @@ SECRET_KEY = os.getenv('SECRET_KEY', '')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 APP_ENVIRONMENT = os.getenv('APP_ENVIRONMENT', '')
-# ALLOWED_HOSTS = ['*']
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
