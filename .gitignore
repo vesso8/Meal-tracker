@@ -3,7 +3,7 @@
 env/
 venv/
 
-static
+/static/
 
 /media/
 /.idea/
