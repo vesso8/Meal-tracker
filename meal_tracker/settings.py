@@ -25,14 +25,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', 'sk')
+SECRET_KEY = os.getenv('SECRET_KEY', 'sk')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG') == 'True'
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 # DEBUG = os.getenv('DEBUG', 'False') == 'True'
-APP_ENVIRONMENT = os.getenv('APP_ENVIRONMENT', 'Development')
+APP_ENVIRONMENT = os.getenv('APP_ENVIRONMENT', '')
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(' ')
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'meal-tracker-django.herokuapp.com',
+]
 
 
 
@@ -88,11 +93,11 @@ WSGI_APPLICATION = 'meal_tracker.wsgi.application'
 DATABASES  = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'HOST': os.environ.get('DB_HOST', '127.0.0.1'),
-            'PORT': os.environ.get('DB_PORT', '5432'),
-            'NAME': os.environ.get('DB_NAME', 'meal_tracker_exam_db'),
-            'USER': os.environ.get('DB_USER', 'postgres'),
-            'PASSWORD': os.environ.get('DB_PASSWORD', 'mysecretpassword'),
+            'HOST': os.getenv('DB_HOST', '127.0.0.1'),
+            'PORT': os.getenv('DB_PORT', '5432'),
+            'NAME': os.getenv('DB_NAME', 'meal_tracker_exam_db'),
+            'USER': os.getenv('DB_USER', 'postgres'),
+            'PASSWORD': os.getenv('DB_PASSWORD', 'mysecretpassword'),
         },
     }
 
