@@ -10,12 +10,12 @@ SECRET_KEY = os.getenv('SECRET_KEY', '')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 APP_ENVIRONMENT = os.getenv('APP_ENVIRONMENT', '')
-ALLOWED_HOSTS = [
-    '130.204.224.111',
-    'localhost',
-    '127.0.0.1',
-    'meal-tracker-django.herokuapp.com',
-]
+ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = [
+#     'localhost',
+#     '127.0.0.1',
+#     'meal-tracker-django.herokuapp.com',
+# ]
 
 
 
