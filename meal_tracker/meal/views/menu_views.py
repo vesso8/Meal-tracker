@@ -12,7 +12,7 @@ class CreateMenuView(generic_views.CreateView):
     success_url = reverse_lazy('home')
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_superuser and not request.user.is_staff and request.user.is_authenticated:
-            return redirect('home')
+            return redirect('unauthorized')
         elif not request.user.is_authenticated:
             return redirect('login')
         return super().dispatch(request, *args, **kwargs)
@@ -38,7 +38,7 @@ class EditMenuView(generic_views.UpdateView):
     success_url = reverse_lazy('home')
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_superuser and not request.user.is_staff and request.user.is_authenticated:
-            return redirect('home')
+            return redirect('unauthorized')
         elif not request.user.is_authenticated:
             return redirect('login')
         return super().dispatch(request, *args, **kwargs)
@@ -53,7 +53,7 @@ class DeleteMenuView(generic_views.DeleteView):
     success_url = reverse_lazy('home')
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_superuser and request.user.is_authenticated:
-            return redirect('home')
+            return redirect('unauthorized')
         elif not request.user.is_authenticated:
             return redirect('login')
         return super().dispatch(request, *args, **kwargs)

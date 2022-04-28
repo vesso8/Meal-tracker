@@ -20,7 +20,6 @@ class RegisterUserView(generic_views.CreateView):
     form_class = custom_forms.RegisterUserForm
     template_name = 'user/register.html'
     success_url = reverse_lazy('home')
-
     def form_valid(self, *args, **kwargs):
         result = super().form_valid(*args, **kwargs)
         login(self.request, self.object)
@@ -33,7 +32,6 @@ class LoginUserView(auth_views.LoginView):
         if self.success_url:
             return self.success_url
         return super().success_url
-
 
 class LogoutUserView(auth_views.LogoutView):
     next_page = 'login'
