@@ -38,6 +38,7 @@ class CreateTestDataMixin(django_test.TestCase):
     ADD_MENU_URL = reverse('add menu')
     CALORIE_COUNTER_URL = reverse('calorie counter')
     MEAL_TRACKER_URL = reverse('meal tracker')
+    UNAUTHORIZED = reverse('unauthorized')
 
     def register(self):
         return self.client.post(self.REGISTER_URL, data=self.VALID_USER_REGISTER_DATA)

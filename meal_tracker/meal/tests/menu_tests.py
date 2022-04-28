@@ -20,11 +20,11 @@ class MenuCreateTests(CreateTestDataMixin):
         response = self.client.get(self.ADD_MENU_URL)
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, self.LOGIN_URL)
-    def test_not_super_user_expect__to_redirect_to_home(self):
+    def test_not_super_user_expect__to_redirect_to_unauthorized(self):
         self.login_and_register()
         self.client.login(email='test@gmail.com', password='secret_password_1234')
         response = self.client.get(self.ADD_MENU_URL)
-        self.assertRedirects(response, self.HOME_URL)
+        self.assertRedirects(response, self.UNAUTHORIZED)
 
     # def test_superuser__expect_to_show_template(self):
     #     self.add_menu_superuser()
