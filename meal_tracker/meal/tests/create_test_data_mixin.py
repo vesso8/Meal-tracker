@@ -20,11 +20,22 @@ class CreateTestDataMixin(django_test.TestCase):
         'email': 'test@gmail.com',
         'password': 'secret_password_1234'
     }
+    VALID_MENU_CREDENTIALS = {
+        'title': 'Monday',
+        'image': 'image.png',
+        'breakfast': 'Pancakes',
+        'snack_1': 'Mixed berries',
+        'lunch': 'Chicken Fillet',
+        'snack_2': 'Protein bar',
+        'dinner': 'Salad',
+        'snack_3': 'Popcorn',
+        'calories': 1500
+    }
     VALID_FOOD_CREDENTIALS = {
         'name': 'apple',
         'type_of_food': 'fruit',
         'quantity': 2,
-        'calorie': 20
+        'calorie': 20,
     }
 
     REGISTER_URL = reverse('register')
@@ -59,7 +70,13 @@ class CreateTestDataMixin(django_test.TestCase):
     def add_food(self):
         self.add_food_data_cred()
         return self.client.post(self.ADD_FOOD_URL, data=self.VALID_FOOD_CREDENTIALS)
-    def add_menu_superuser(self):
-        my_admin = self.UserModel.objects.create_superuser(email='myuser@gmail.com', password='user11223344')
-        c = Client()
-        return c.login(email=my_admin.email, password=my_admin.password)
+    def menu_superuser(self):
+        return self.UserModel.objects.create_superuser(email='myuser@gmail.com', password='user11223344')
+
+    # def create_menu(self):
+    #     self.menu_superuser()
+    #     self.client.login(email='myuser@gmail.com', password='user11223344')
+    #     return self.client.post(self.ADD_MENU_URL, data=self.VALID_MENU_CREDENTIALS)
+
+
+
