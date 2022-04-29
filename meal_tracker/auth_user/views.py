@@ -35,7 +35,6 @@ class LoginUserView(auth_views.LoginView):
 
 class LogoutUserView(auth_views.LogoutView):
     next_page = 'login'
-    # template_name = 'user/logout.html'
 
 class ProfileDetailsUserView(CustomPermissionMixin, generic_views.DetailView):
     TEMPLATE_NAME = 'Profile Details'
