@@ -73,10 +73,4 @@ class CreateTestDataMixin(django_test.TestCase):
     def menu_superuser(self):
         return self.UserModel.objects.create_superuser(email='myuser@gmail.com', password='user11223344')
 
-    # def create_menu(self):
-    #     self.menu_superuser()
-    #     self.client.login(email='myuser@gmail.com', password='user11223344')
-    #     return self.client.post(self.ADD_MENU_URL, data=self.VALID_MENU_CREDENTIALS)
-
-
 
