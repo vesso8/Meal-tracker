@@ -8,6 +8,15 @@ from meal_tracker.meal.models import Menu
 
 
 UserModel = get_user_model()
+
+class CustomPermissionMixinDelete(generic_views.View):
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser and request.user.is_authenticated:
+            return redirect('unauthorized')
+        elif not request.user.is_authenticated:
+            return redirect('login')
+        return super().dispatch(request, *args, **kwargs)
+    
 class CustomPermissionMixin(generic_views.View):
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_superuser and not request.user.is_staff and request.user.is_authenticated:
@@ -47,7 +56,7 @@ class EditMenuView(CustomPermissionMixin, generic_views.UpdateView):
         context['template_name'] = self.TEMPLATE_NAME
         return context
 
-class DeleteMenuView(CustomPermissionMixin, generic_views.DeleteView):
+class DeleteMenuView(CustomPermissionMixinDelete, generic_views.DeleteView):
     model = Menu
     template_name = 'menu/delete_menu.html'
     success_url = reverse_lazy('home')
