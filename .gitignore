@@ -3,5 +3,6 @@
 env/
 venv/
 staticfiles
+static
 media
 /.idea/
