@@ -12,7 +12,7 @@
                         {{ form }}
                         {% csrf_token %}
 
-                        <button class="add-album" type="submit">Add</button>
+                        <button class="add-food" type="submit">Add</button>
                     </div>
                 </fieldset>
             </form>
@@ -30,14 +30,20 @@
                 </tr>
             </thead>
             <tbody>
-                {% for food in food_items %}
+            {% for food in food_items %}
                 <tr>
-                    <td>{{ food.name }}</td>
+                {% if food.available_quantity %}
+                    {% if food.quantity_units == '(n)' %}
+                        <td>{{ food.name }} </td>
+                    {% else %}
+                        <td>{{ food.name }} {{ food.quantity_units }}</td>
+                    {% endif %}
                     <td>{{ food.type_of_food }}</td>
                     <td>{{ food.calorie }}</td>
                     <td>{{ food.quantity }}</td>
+                {% endif %}
                 </tr>
-                {% endfor %}
+            {% endfor %}
             </tbody>
         </table>
     </div>

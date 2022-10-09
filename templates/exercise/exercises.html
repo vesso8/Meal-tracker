@@ -1,0 +1,21 @@
+{% extends 'base/base.html' %}
+{% block page_content %}
+    <section id="catalogPage">
+
+        <h1>Exercises</h1>
+
+        {% for exercise in all_exercises %}
+
+            <div class="card-box">
+                <img src="{{ exercise.image.url }}" alt="Cover Image">
+                <div>
+                    <h1 class="name">Muscle Group: {{ exercise.muscle_group }}</h1>
+                    <h1 class="name">Calories Burned: {{ exercise.calories_burned }}</h1>
+                    </div>
+                    <div class="btn-group">
+                        <a href="{% url 'exercise details' exercise.pk %}">Details</a>
+                    </div>
+                </div>
+        {% endfor %}
+    </section>
+{% endblock %}

@@ -7,22 +7,22 @@ from datetime import timedelta
 from django.views import generic as generic_views
 
 from meal_tracker.meal.forms import SelectFoodForm, AddFoodForm, MealTrackerForm, UpdateFoodForm, DeleteFoodForm
-from meal_tracker.meal.models import PostFood, Meal_tracker, Food
+from meal_tracker.meal.models import PostFood, Calorie_counter, Food
 from datetime import date
 
 UserModel = get_user_model()
 
+
 @login_required(login_url=reverse_lazy('login'), redirect_field_name='redirect_to')
 def calorie_counter(request):
-    last_day = Meal_tracker.objects.filter(person_of=request.user).last()
+    last_day = Calorie_counter.objects.filter(person_of=request.user).last()
     calorie_goal = last_day.calorie_goal
 
     if date.today() > last_day.date:
-        profile = Meal_tracker.objects.create(person_of=request.user)
+        profile = Calorie_counter.objects.create(person_of=request.user)
         profile.save()
-    last_day = Meal_tracker.objects.filter(person_of=request.user).last()
     all_food_today = PostFood.objects.filter(profile=last_day)
-    calorie_goal_status = calorie_goal - last_day.total_calorie
+    calorie_goal_status = round(calorie_goal - last_day.total_calorie)
     over_calorie = 0
     if calorie_goal_status < 0:
         over_calorie = abs(calorie_goal_status)
@@ -34,6 +34,8 @@ def calorie_counter(request):
         'food_selected_today': all_food_today
     }
     return render(request, 'generic/calorie_counter.html', context)
+
+
 @login_required(login_url=reverse_lazy('login'), redirect_field_name='redirect_to')
 def add_food(request):
     food_items = Food.objects.filter(person_of=request.user)
@@ -48,15 +50,16 @@ def add_food(request):
     else:
         form = AddFoodForm()
 
-
     context = {
-        'form':form,
+        'form': form,
         'food_items': food_items,
     }
     return render(request, 'food/food_add.html', context)
+
+
 @login_required(login_url=reverse_lazy('login'), redirect_field_name='redirect_to')
 def select_food(request):
-    person = Meal_tracker.objects.filter(person_of=request.user).last()
+    person = Calorie_counter.objects.filter(person_of=request.user).last()
     food_items = Food.objects.filter(person_of=request.user)
     form = SelectFoodForm(request.user, instance=person)
 
@@ -68,10 +71,12 @@ def select_food(request):
     else:
         form = SelectFoodForm(request.user)
     context = {
-        'form':form,
-        'food_items':food_items,
+        'form': form,
+        'food_items': food_items
     }
     return render(request, 'food/select_food.html', context)
+
+
 @login_required(login_url=reverse_lazy('login'), redirect_field_name='redirect_to')
 def update_food(request, pk):
     food = Food.objects.get(pk=pk)
@@ -88,6 +93,8 @@ def update_food(request, pk):
         'food': food
     }
     return render(request, 'food/edit_food.html', context)
+
+
 @login_required(login_url=reverse_lazy('login'), redirect_field_name='redirect_to')
 def delete_food(request, pk):
     food = Food.objects.get(pk=pk)
@@ -106,10 +113,9 @@ def delete_food(request, pk):
     return render(request, 'food/delete_food.html', context)
 
 
-
 @login_required(login_url=reverse_lazy('login'), redirect_field_name='redirect_to')
 def meal_tracker(request):
-    person = Meal_tracker.objects.filter(person_of=request.user).last()
+    person = Calorie_counter.objects.filter(person_of=request.user).last()
     food_items = Food.objects.filter(person_of=request.user)
     form = MealTrackerForm(instance=person)
 
@@ -121,11 +127,11 @@ def meal_tracker(request):
     else:
         form = MealTrackerForm(instance=person)
     day_of_the_past_week = timezone.now().date() - timedelta(days=7)
-    records = Meal_tracker.objects.filter(date__gte=day_of_the_past_week, date__lt=timezone.now().date(), person_of=request.user)
+    records = Calorie_counter.objects.filter(date__gte=day_of_the_past_week, date__lt=timezone.now().date(),
+                                          person_of=request.user)
     context = {
         'form': form,
         'food_items': food_items,
         'records': records
     }
     return render(request, 'generic/meal_tracker.html', context)
-

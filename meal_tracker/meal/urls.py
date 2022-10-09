@@ -1,5 +1,7 @@
 from django.urls import path
 
+from meal_tracker.meal.views.exercise_views import CreateExerciseView, ExerciseDetailsView, ExercisesView, \
+    EditExerciseView, DeleteExerciseView
 from meal_tracker.meal.views.menu_views import CreateMenuView, MenuDetailsView, EditMenuView, \
     DeleteMenuView
 from meal_tracker.meal.views.generic_views import HomeView
@@ -15,6 +17,11 @@ urlpatterns = (
     path('menu/details/<int:pk>/', MenuDetailsView.as_view(), name='menu details'),
     path('menu/edit/<int:pk>/', EditMenuView.as_view(), name='edit menu'),
     path('menu/delete/<int:pk>/', DeleteMenuView.as_view(), name='delete menu'),
+    path('exercises/', ExercisesView.as_view(), name='exercises'),
+    path('exercise/add/', CreateExerciseView.as_view(), name='add exercise'),
+    path('exercise/edit/<int:pk>/', EditExerciseView.as_view(), name='edit exercise'),
+    path('exercise/delete/<int:pk>/', DeleteExerciseView.as_view(), name='delete exercise'),
+    path('exercise/details/<int:pk>/', ExerciseDetailsView.as_view(), name='exercise details'),
     path('meal_tracker/', meal_tracker, name='meal tracker'),
     path('calorie_counter/', calorie_counter, name='calorie counter'),
     path('select_food/', select_food, name='select food'),

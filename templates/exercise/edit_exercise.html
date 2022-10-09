@@ -1,0 +1,41 @@
+{% extends 'base/base.html' %}
+{% block page_content %}
+<!--Edit Page-->
+<section id="edit-page" class="editPage">
+<form id="edit-form" action="{% url 'edit exercise' exercise.pk %}" method="post">
+    <form>
+        <fieldset>
+            <legend>Edit Exercise</legend>
+            <div class="container">
+                {% csrf_token %}
+                <label>Muscle Group:</label>
+                {{ form.muscle_group }}
+                <label>1:</label>
+                {{ form.first_exercise }}
+                <label>2:</label>
+                {{ form.second_exercise }}
+                <label>3:</label>
+                {{ form.third_exercise }}
+                <label>4:</label>
+                {{ form.fourth_exercise }}
+                {% if form.fifth_exercise %}
+                    <label>5:</label>
+                    {{ form.fifth_exercise }}
+                {% endif %}
+                {% if form.sixth_exercise %}
+                    <label>6:</label>
+                    {{ form.sixth_exercise }}
+                {% endif %}
+                <label>Sets:</label>
+                {{ form.sets }}
+                <label>Reps:</label>
+                {{ form.reps }}
+                <label>Calories burned:</label>
+                {{ form.calories_burned }}
+                <button class="edit-food" type="submit">Edit</button>
+            </div>
+        </fieldset>
+    </form>
+    </form>
+</section>
+{% endblock %}

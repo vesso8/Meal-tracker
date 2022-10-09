@@ -1,0 +1,42 @@
+{% extends 'base/base.html' %}
+{% block page_content %}
+{% load user_profile %}
+
+<!--Details Page-->
+<section id="detailsPage">
+    <div class="wrapper">
+
+        <div class="foodCover">
+            <img src="{{ exercise.image.url }}" alt="Cover Image">
+        </div>
+
+        <div class="foodInfo">
+
+            <div class="foodText">
+                <h1>Muscle Group: {{ exercise.muscle_group }}</h1>
+                <h3>1: {{ exercise.first_exercise }}</h3>
+                <h3>2: {{ exercise.second_exercise }}</h3>
+                <h3>3: {{ exercise.third_exercise }}</h3>
+                <h3>4: {{ exercise.fourth_exercise }}</h3>
+                <h3>5: {{ exercise.fifth_exercise }}</h3>
+                <h3>6: {{ exercise.sixth_exercise }}</h3>
+                <h3>Sets: {{ exercise.sets }}</h3>
+                <h1>Repetitions: {{ exercise.reps }}</h1>
+                <h1>Calories burned: {{ exercise.calories_burned }}</h1>
+
+
+
+            <div class="actionBtn">
+                {% if request.user|has_group:"Staff" %}
+                    <a href="{% url 'edit exercise' exercise.pk %}" class="edit">Edit</a>
+                {% elif request.user|has_group:"Administrator" %}
+                    <a href="{% url 'edit exercise' exercise.pk %}" class="edit">Edit</a>
+                    <a href="{% url 'delete exercise' exercise.pk %}" class="remove">Delete</a>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+    </div>
+</section>
+{% endblock %}

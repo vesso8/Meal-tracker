@@ -1,11 +1,12 @@
 from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save
 
-from meal_tracker.meal.models import Meal_tracker
+from meal_tracker.meal.models import Calorie_counter
 
 UserModel = get_user_model()
-def create_meal_tracker(sender,instance,created,**kwargs):
+def create_calorie_counter(sender,instance,created,**kwargs):
 	if created:
-		Meal_tracker.objects.create(person_of=instance)
+		Calorie_counter.objects.create(person_of=instance)
 
-post_save.connect(create_meal_tracker,sender=UserModel)
+post_save.connect(create_calorie_counter,sender=UserModel)
+

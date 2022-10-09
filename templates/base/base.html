@@ -24,8 +24,11 @@
                 <!--Only for user with created profile-->
                 {% if request.user|has_group:"Staff" or request.user|has_group:"Administrator" %}
                     <li><a href="{% url 'add menu' %}">Add Menu</a></li>
+                    <li><a href="{% url 'add exercise' %}">Add Exercise</a></li>
+
                 {% endif %}
                 {% if request.user.is_authenticated %}
+                    <li><a href="{% url 'exercises' %}">Exercises</a></li>
                     <li><a href="{% url 'select food' %}">Select Food</a></li>
                     <li><a href="{% url 'add food' %}">Add Food</a></li>
                     <li><a href="{% url 'calorie counter' %}">Calorie Counter</a></li>

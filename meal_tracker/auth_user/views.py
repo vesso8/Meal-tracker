@@ -8,6 +8,7 @@ from meal_tracker.auth_user.models import Profile, AuthUser
 
 UserModel = get_user_model()
 
+
 class CustomPermissionMixin(generic_views.View):
     def dispatch(self, request, *args, **kwargs):
         user = UserModel.objects.get(pk=kwargs['pk'])
@@ -20,21 +21,26 @@ class RegisterUserView(generic_views.CreateView):
     form_class = custom_forms.RegisterUserForm
     template_name = 'user/register.html'
     success_url = reverse_lazy('home')
+
     def form_valid(self, *args, **kwargs):
         result = super().form_valid(*args, **kwargs)
         login(self.request, self.object)
         return result
 
+
 class LoginUserView(auth_views.LoginView):
     template_name = 'user/login.html'
     success_url = reverse_lazy('home')
+
     def get_success_url(self):
         if self.success_url:
             return self.success_url
         return super().success_url
 
+
 class LogoutUserView(auth_views.LogoutView):
     next_page = 'login'
+
 
 class ProfileDetailsUserView(CustomPermissionMixin, generic_views.DetailView):
     TEMPLATE_NAME = 'Profile Details'
@@ -49,21 +55,25 @@ class ProfileDetailsUserView(CustomPermissionMixin, generic_views.DetailView):
         context['template_name'] = self.TEMPLATE_NAME
         return context
 
+
 class ProfileEditView(CustomPermissionMixin, generic_views.UpdateView):
     TEMPLATE_NAME = 'Edit Profile'
     model = Profile
     template_name = 'user/user_edit.html'
     fields = ('picture', 'first_name', 'last_name')
     success_url = reverse_lazy('home')
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['template_name'] = self.TEMPLATE_NAME
         return context
 
+
 class ProfileDeleteView(CustomPermissionMixin, generic_views.DeleteView):
     model = AuthUser
     template_name = 'user/user_delete.html'
     success_url = reverse_lazy('home')
+
 
 class PasswordChangeView(CustomPermissionMixin, generic_views.UpdateView):
     TEMPLATE_NAME = 'Change Password'
@@ -75,10 +85,12 @@ class PasswordChangeView(CustomPermissionMixin, generic_views.UpdateView):
 
     def get_form_class(self):
         return self.form_class
+
     def get_success_url(self):
         if self.success_url:
             return self.success_url
         return super().success_url
+
     # def get_success_url(self):
     #     kwargs = {'pk': self.request.user.id}
     #     return reverse('user details', kwargs=kwargs)
@@ -87,7 +99,8 @@ class PasswordChangeView(CustomPermissionMixin, generic_views.UpdateView):
         kwargs['user'] = self.request.user
         kwargs.pop('instance')
         return kwargs
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['template_name'] =self.TEMPLATE_NAME
+        context['template_name'] = self.TEMPLATE_NAME
         return context

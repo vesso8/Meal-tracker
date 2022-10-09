@@ -90,7 +90,7 @@ textarea {
     margin-bottom: 5px;
     margin-top: 20px;
 }
-.add-album, .edit-album, .delete-album, .delete-profile {
+.add-food, .edit-food, .delete-food, .delete-profile {
 	width: 150px;
 	height: 50px;
 	cursor: pointer;

@@ -12,7 +12,7 @@
                         {{ form }}
                         {% csrf_token %}
 
-                        <button class="add-album" type="submit" value="select">Select</button>
+                        <button class="add-food" type="submit" value="select">Select</button>
                     </div>
                 </fieldset>
             </form>
@@ -53,14 +53,20 @@
             </thead>
             <tbody>
                 {% for food in food_items %}
-                <tr>
-                    <td>{{ food.name }}</td>
-                    <td>{{ food.type_of_food }}</td>
-                    <td>{{ food.calorie }}</td>
-                    <td>{{ food.quantity }}</td>
-                    <td><a class="btn btn-sm btn-info" href="{% url 'update food' food.pk%}">Update</a></td>
-                    <td><a class="btn btn-sm " href="{% url 'delete food' food.pk %}">Delete</a></td>
-                </tr>
+                    {% if food.available_quantity %}
+                        <tr>
+                       {% if food.quantity_units == '(n)' %}
+                           <td>{{ food.name }} </td>
+                       {% else %}
+                           <td>{{ food.name }} {{ food.quantity_units }}</td>
+                       {% endif %}
+                       <td>{{ food.type_of_food }}</td>
+                       <td>{{ food.calorie }}</td>
+                       <td>{{ food.quantity }}</td>
+                       <td><a class="btn btn-sm btn-info" href="{% url 'update food' food.pk %}">Update</a></td>
+                       <td><a class="btn btn-sm " href="{% url 'delete food' food.pk %}">Delete</a></td>
+                        </tr>
+                    {% endif %}
                 {% endfor %}
             </tbody>
         </table>

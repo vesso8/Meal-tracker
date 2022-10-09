@@ -1,14 +1,22 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator
 from django.db import models
 from cloudinary import models as cloudinary_models
+from django.shortcuts import redirect, render
+from django.views import generic as generic_views
+
 from meal_tracker.auth_user.models import AuthUser
 
 UserModel = get_user_model()
+
+
+
+
 class Food(models.Model):
     FOOD_NAME_MAX_LENGTH = 25
     TYPE_OF_FOOD_MAX_LENGTH = 25
-
+    UNITS_MAX_LENGTH = 10
     FRUIT = 'Fruit'
     VEGETABLES = 'Vegetables'
     DAIRY = 'Dairy'
@@ -16,8 +24,14 @@ class Food(models.Model):
     PROTEIN = 'Protein'
     FATS = 'Fats'
 
-    FOOD_TYPES = [(x, x) for x in [FRUIT, VEGETABLES, DAIRY, CARBS, PROTEIN, FATS]]
+    GRAMS = '(gr)'
+    KILOGRAMS = '(kg)'
+    LITERS = '(l)'
+    MILLILITERS = '(ml)'
+    COUNT = '(n)'
 
+    FOOD_TYPES = [(x, x) for x in [FRUIT, VEGETABLES, DAIRY, CARBS, PROTEIN, FATS]]
+    UNITS = [(y, y) for y in [GRAMS, KILOGRAMS, LITERS, MILLILITERS, COUNT]]
 
     name = models.CharField(
         max_length=FOOD_NAME_MAX_LENGTH
@@ -27,17 +41,41 @@ class Food(models.Model):
         choices=FOOD_TYPES,
     )
     quantity = models.PositiveIntegerField(null=False, default=0)
-    calorie = models.FloatField(null=False, default=0)
-    person_of = models.ForeignKey(UserModel,null=True,on_delete=models.CASCADE)
+    quantity_units = models.CharField(
+        max_length=UNITS_MAX_LENGTH,
+        choices=UNITS,
+    )
+    calorie = models.FloatField(null=False,
+                                default=0,
+                                validators=(MinValueValidator(0),))
+    available_quantity = models.BooleanField(default=True)
+    person_of = models.ForeignKey(UserModel, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
 
-class Meal_tracker(models.Model):
-    person_of = models.ForeignKey(UserModel, null=True,on_delete=models.CASCADE)
+    @staticmethod
+    def update_new_quantity_and_calories(pk, given_quantity):
+        food_selected = Food.objects.get(id=pk)
+        quantity_difference = food_selected.quantity - given_quantity
+        calories_difference = round(food_selected.calorie / (food_selected.quantity / quantity_difference))
+        food_selected.quantity = quantity_difference
+        food_selected.calorie = calories_difference
+        if food_selected.quantity == 0:
+            food_selected.available_quantity = False
+            food_selected.save()
+        else:
+            food_selected.save()
+
+
+
+
+class Calorie_counter(models.Model):
+    person_of = models.ForeignKey(UserModel, null=True, on_delete=models.CASCADE)
     calorie_count = models.FloatField(default=0, null=True, blank=True)
     food_selected = models.ForeignKey(Food, on_delete=models.CASCADE, null=True, blank=True)
-    quantity = models.FloatField(default=0)
+    quantity = models.IntegerField(default=0,
+                                 validators=(MinValueValidator(1),))
     total_calorie = models.FloatField(default=0, null=True)
     date = models.DateField(auto_now_add=True)
     calorie_goal = models.PositiveIntegerField(default=0)
@@ -45,31 +83,41 @@ class Meal_tracker(models.Model):
 
     def save(self, *args, **kwargs):
         if self.food_selected != None:
-            self.amount = (self.food_selected.calorie/self.food_selected.quantity)
-            self.calorie_count = self.amount*self.quantity
+            if self.quantity > self.food_selected.quantity:
+                raise ValueError("There is not that much available quantity for the selected food!")
+            self.amount = (self.food_selected.calorie / self.food_selected.quantity)
+            self.calorie_count = self.amount * self.quantity
             self.total_calorie = self.calorie_count + self.total_calorie
             self.calorie_count = round(self.calorie_count, 1)
             self.total_calorie = round(self.total_calorie, 1)
-            calories = Meal_tracker.objects.filter(person_of=self.person_of).last()
-            PostFood.objects.create(profile=calories, food=self.food_selected,calories_amount=self.calorie_count,amount=self.quantity)
+            calories = Calorie_counter.objects.filter(person_of=self.person_of).last()
+            Food.update_new_quantity_and_calories(self.food_selected.pk ,self.quantity)
+            PostFood.objects.create(profile=calories, food=self.food_selected, calories_amount=self.calorie_count,
+                                    amount=self.quantity)
             self.food_selected = None
-            super(Meal_tracker, self).save(*args, **kwargs)
+
+            super(Calorie_counter, self).save(*args, **kwargs)
         else:
-            super(Meal_tracker, self).save(*args, **kwargs)
+            super(Calorie_counter, self).save(*args, **kwargs)
+
     def __str__(self):
         return f'Person: {self.person_of} -Calories: {self.calorie_count}'
 
+
 class PostFood(models.Model):
-    profile = models.ForeignKey(Meal_tracker, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Calorie_counter, on_delete=models.CASCADE)
     food = models.ForeignKey(Food, on_delete=models.CASCADE)
-    calories_amount = models.FloatField(default=0,null=True,blank=True)
+    calories_amount = models.FloatField(default=0, null=True, blank=True)
     amount = models.FloatField(default=0)
+
     def save(self, *args, **kwargs):
         self.calories_amount = round(self.calories_amount, 2)
         super(PostFood, self).save(*args, **kwargs)
 
     def __str__(self):
         return f'Person: {self.profile.person_of} - Food added: {self.food}- Calories: {self.calories_amount}'
+
+
 class Menu(models.Model):
     TITLE_MAX_LENGTH = 25
     EACH_FOOD_MAX_LENGTH = 50
@@ -103,8 +151,52 @@ class Menu(models.Model):
         blank=True,
     )
     image = cloudinary_models.CloudinaryField('image')
-    calories = models.IntegerField()
+    calories = models.PositiveIntegerField()
 
     def __str__(self):
         return f'{self.title}'
 
+
+class Exercise(models.Model):
+    MUSCLE_GROUP_MAX_LENGTH = 10
+    CHEST = 'Chest'
+    BACK = 'Back'
+    BICEPS = 'Biceps'
+    TRICEPS = 'Triceps'
+    ABS = 'Abs'
+    LEGS = 'Legs'
+    SHOULDERS = 'Shoulders'
+    EACH_EXERCISE_MAX_LENGTH = 25
+
+    MUSCLE_TYPES = [(x, x) for x in [CHEST, BACK, BICEPS,TRICEPS,  ABS, LEGS, SHOULDERS]]
+
+    muscle_group = models.CharField(
+        max_length= MUSCLE_GROUP_MAX_LENGTH,
+        choices=MUSCLE_TYPES,
+    )
+    sets = models.PositiveIntegerField(default=0)
+    reps = models.PositiveIntegerField(default=0)
+    image = cloudinary_models.CloudinaryField('image')
+    first_exercise = models.CharField(
+        max_length=EACH_EXERCISE_MAX_LENGTH,
+    )
+    second_exercise = models.CharField(
+        max_length=EACH_EXERCISE_MAX_LENGTH,
+    )
+    third_exercise = models.CharField(
+        max_length=EACH_EXERCISE_MAX_LENGTH,
+    )
+    fourth_exercise = models.CharField(
+        max_length=EACH_EXERCISE_MAX_LENGTH,
+    )
+    fifth_exercise = models.CharField(
+        max_length=EACH_EXERCISE_MAX_LENGTH,
+        null=True,
+        blank=True,
+    )
+    sixth_exercise = models.CharField(
+        max_length= EACH_EXERCISE_MAX_LENGTH,
+        null=True,
+        blank=True,
+    )
+    calories_burned = models.PositiveIntegerField(default=50)

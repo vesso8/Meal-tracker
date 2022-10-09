@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from django.contrib import admin
 
-from meal_tracker.meal.models import Food, Meal_tracker, PostFood, Menu
+from meal_tracker.meal.models import Food, Calorie_counter, PostFood, Menu, Exercise
 
 
 @admin.register(Food)
@@ -10,8 +10,8 @@ class RegisterFood(admin.ModelAdmin):
     pass
 
 
-@admin.register(Meal_tracker)
-class RegisterMeal_tracker(admin.ModelAdmin):
+@admin.register(Calorie_counter)
+class RegisterCalorieCounter(admin.ModelAdmin):
     pass
 
 @admin.register(PostFood)
@@ -20,4 +20,8 @@ class RegisterPostFood(admin.ModelAdmin):
 
 @admin.register(Menu)
 class RegisterMenu(admin.ModelAdmin):
+    pass
+
+@admin.register(Exercise)
+class RegisterExercise(admin.ModelAdmin):
     pass
