@@ -6,8 +6,6 @@ from cloudinary import models as cloudinary_models
 
 
 class AuthUser(auth_models.AbstractUser, auth_models.PermissionsMixin):
-    FIRST_NAME_MAX_LENGTH = 15
-    LAST_NAME_MAX_LENGTH = 15
     USERNAME_MAX_LENGTH = 15
 
     email = models.EmailField(

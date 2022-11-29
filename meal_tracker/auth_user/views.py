@@ -91,9 +91,6 @@ class PasswordChangeView(CustomPermissionMixin, generic_views.UpdateView):
             return self.success_url
         return super().success_url
 
-    # def get_success_url(self):
-    #     kwargs = {'pk': self.request.user.id}
-    #     return reverse('user details', kwargs=kwargs)
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user'] = self.request.user

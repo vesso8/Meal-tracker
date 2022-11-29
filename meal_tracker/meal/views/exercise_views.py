@@ -68,8 +68,7 @@ class EditExerciseView(CustomPermissionMixin, generic_views.UpdateView):
     model = Exercise
     template_name = 'exercise/edit_exercise.html'
     fields = (
-    'muscle_group', 'sets', 'reps', 'image', 'first_exercise', 'second_exercise', 'third_exercise', 'fourth_exercise',
-    'fifth_exercise', 'sixth_exercise', 'calories_burned')
+    'muscle_group', 'sets', 'reps', 'image', 'exercise', 'calories_burned')
     success_url = reverse_lazy('exercises')
 
     def get_context_data(self, *, object_list=None, **kwargs):

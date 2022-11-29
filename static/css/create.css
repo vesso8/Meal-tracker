@@ -4,7 +4,8 @@ fieldset {
   width: 25em;
   border-radius: 2px;
   border-color: #8FBC8F;
-  background: #8FBC8F;
+  /*background: #8FBC8F;*/
+  background-image: linear-gradient(150deg, darkseagreen 50%, #809063 100%);
   box-shadow: 0 2px 2px #2F4F4F;
 }
 
@@ -64,7 +65,7 @@ input[type=text]:focus, input[type=number]:focus, textarea:focus, input[type=url
 textarea {
   height: 100px;
   font-family: "Lato", serif;
-  color: white;
+  color: black;
 }
 
 .delete-menu {

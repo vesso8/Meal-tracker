@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
-from django.core.validators import MinValueValidator
+from django import forms
+from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from cloudinary import models as cloudinary_models
 from django.shortcuts import redirect, render
@@ -16,7 +18,7 @@ UserModel = get_user_model()
 class Food(models.Model):
     FOOD_NAME_MAX_LENGTH = 25
     TYPE_OF_FOOD_MAX_LENGTH = 25
-    UNITS_MAX_LENGTH = 10
+    UNITS_MAX_LENGTH = 11
     FRUIT = 'Fruit'
     VEGETABLES = 'Vegetables'
     DAIRY = 'Dairy'
@@ -28,10 +30,10 @@ class Food(models.Model):
     KILOGRAMS = '(kg)'
     LITERS = '(l)'
     MILLILITERS = '(ml)'
-    COUNT = '(n)'
+    PER_PIECE = '(per piece)'
 
     FOOD_TYPES = [(x, x) for x in [FRUIT, VEGETABLES, DAIRY, CARBS, PROTEIN, FATS]]
-    UNITS = [(y, y) for y in [GRAMS, KILOGRAMS, LITERS, MILLILITERS, COUNT]]
+    UNITS = [(y, y) for y in [GRAMS, KILOGRAMS, LITERS, MILLILITERS, PER_PIECE]]
 
     name = models.CharField(
         max_length=FOOD_NAME_MAX_LENGTH
@@ -58,16 +60,17 @@ class Food(models.Model):
     def update_new_quantity_and_calories(pk, given_quantity):
         food_selected = Food.objects.get(id=pk)
         quantity_difference = food_selected.quantity - given_quantity
-        calories_difference = round(food_selected.calorie / (food_selected.quantity / quantity_difference))
+        if quantity_difference == 0:
+            calories_difference = 0
+            food_selected.available_quantity = False
+
+        elif given_quantity > food_selected.quantity:
+            return redirect('calorie counter')
+        else:
+            calories_difference = round(food_selected.calorie / (food_selected.quantity / quantity_difference))
         food_selected.quantity = quantity_difference
         food_selected.calorie = calories_difference
-        if food_selected.quantity == 0:
-            food_selected.available_quantity = False
-            food_selected.save()
-        else:
-            food_selected.save()
-
-
+        food_selected.save()
 
 
 class Calorie_counter(models.Model):
@@ -83,8 +86,6 @@ class Calorie_counter(models.Model):
 
     def save(self, *args, **kwargs):
         if self.food_selected != None:
-            if self.quantity > self.food_selected.quantity:
-                raise ValueError("There is not that much available quantity for the selected food!")
             self.amount = (self.food_selected.calorie / self.food_selected.quantity)
             self.calorie_count = self.amount * self.quantity
             self.total_calorie = self.calorie_count + self.total_calorie
@@ -99,6 +100,12 @@ class Calorie_counter(models.Model):
             super(Calorie_counter, self).save(*args, **kwargs)
         else:
             super(Calorie_counter, self).save(*args, **kwargs)
+    def clean(self):
+        super().clean()
+        if self.quantity:
+            if self.quantity > self.food_selected.quantity:
+                raise ValidationError("There is no enough quantity of this product")
+        super(Calorie_counter, self)
 
     def __str__(self):
         return f'Person: {self.person_of} -Calories: {self.calorie_count}'
@@ -166,7 +173,7 @@ class Exercise(models.Model):
     ABS = 'Abs'
     LEGS = 'Legs'
     SHOULDERS = 'Shoulders'
-    EACH_EXERCISE_MAX_LENGTH = 25
+    EXERCISE_MAX_LENGTH = 255
 
     MUSCLE_TYPES = [(x, x) for x in [CHEST, BACK, BICEPS,TRICEPS,  ABS, LEGS, SHOULDERS]]
 
@@ -177,26 +184,8 @@ class Exercise(models.Model):
     sets = models.PositiveIntegerField(default=0)
     reps = models.PositiveIntegerField(default=0)
     image = cloudinary_models.CloudinaryField('image')
-    first_exercise = models.CharField(
-        max_length=EACH_EXERCISE_MAX_LENGTH,
-    )
-    second_exercise = models.CharField(
-        max_length=EACH_EXERCISE_MAX_LENGTH,
-    )
-    third_exercise = models.CharField(
-        max_length=EACH_EXERCISE_MAX_LENGTH,
-    )
-    fourth_exercise = models.CharField(
-        max_length=EACH_EXERCISE_MAX_LENGTH,
-    )
-    fifth_exercise = models.CharField(
-        max_length=EACH_EXERCISE_MAX_LENGTH,
-        null=True,
-        blank=True,
-    )
-    sixth_exercise = models.CharField(
-        max_length= EACH_EXERCISE_MAX_LENGTH,
-        null=True,
-        blank=True,
+    exercise = models.TextField(
+        max_length=EXERCISE_MAX_LENGTH,
+        null=False
     )
     calories_burned = models.PositiveIntegerField(default=50)

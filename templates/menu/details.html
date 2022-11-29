@@ -25,11 +25,11 @@
             </div>
 
             <div class="actionBtn">
-                {% if request.user|has_group:"Staff" %}
-                    <a href="{% url 'edit menu' menu.pk %}" class="edit">Edit</a>
-                {% elif request.user|has_group:"Administrator" %}
+                {% if request.user|has_group:"Administrator" %}
                     <a href="{% url 'edit menu' menu.pk %}" class="edit">Edit</a>
                     <a href="{% url 'delete menu' menu.pk %}" class="remove">Delete</a>
+                {% elif request.user|has_group:"Staff" %}
+                    <a href="{% url 'edit menu' menu.pk %}" class="edit">Edit</a>
                 {% endif %}
 {#            </div>#}
 

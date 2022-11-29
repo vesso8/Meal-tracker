@@ -11,6 +11,11 @@ def unauthorized(request):
     }
     return render(request, context=context, template_name='generic/401.html')
 
+def handler400(request, *args, **argv):
+    context = {
+        'template_name': '400 (Bad Request)'
+    }
+    return render(request, context=context, template_name='generic/400.html')
 
 def handler404(request, *args, **argv):
     response = render(request, context={}, template_name='generic/404.html')
@@ -18,7 +23,6 @@ def handler404(request, *args, **argv):
     return response
 
 def handler405(request, *args, **argv):
-    TEMPLATE_NAME = '405 Not Allowed'
     response = render(request, context={}, template_name='generic/405.html')
     response.status_code = 405
     return response

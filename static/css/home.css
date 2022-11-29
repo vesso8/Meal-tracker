@@ -11,7 +11,8 @@ body {
 
 nav,
 footer {
-    background-color: #8FBC8F;
+    background-color: darkseagreen;
+    background-image: linear-gradient(150deg, darkseagreen 30%, #809063 100%);
     width: 100%;
     display: flex;
     font-size: 16px;
@@ -24,7 +25,7 @@ footer {
 
 nav a {
     text-decoration: none;
-    color: #8f8f8f;
+    color: red;
     font-size: 20px;
     font-weight: bolder;
     position: relative;

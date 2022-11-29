@@ -11,7 +11,7 @@ class AddFoodForm(forms.ModelForm):
 class UpdateFoodForm(forms.ModelForm):
     class Meta:
         model = Food
-        fields = ('name', 'type_of_food', 'quantity', 'calorie')
+        fields = ('name', 'type_of_food', 'quantity', 'quantity_units', 'calorie')
 
 class DeleteFoodForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -24,7 +24,7 @@ class DeleteFoodForm(forms.ModelForm):
         return self.instance
     class Meta:
         model = Food
-        fields = ('name', 'type_of_food', 'quantity', 'calorie')
+        fields = ('name', 'type_of_food', 'quantity', 'quantity_units','calorie')
 
 class BaseMenuForm(forms.ModelForm):
     class Meta:
@@ -43,11 +43,9 @@ class SelectFoodForm(forms.ModelForm):
     class Meta:
         model = Calorie_counter
         fields = ('food_selected', 'quantity')
-
     def __init__(self, user, *args, **kwargs):
         super(SelectFoodForm, self).__init__(*args, **kwargs)
         self.fields['food_selected'].queryset = Food.objects.filter(person_of=user, available_quantity=True)
-        #self.fields['quantity'].queryset = Food.quantity
 
 class MealTrackerForm(forms.ModelForm):
     class Meta:
@@ -58,7 +56,7 @@ class MealTrackerForm(forms.ModelForm):
 class BaseExerciseForm(forms.ModelForm):
     class Meta:
         model = Exercise
-        fields = ('muscle_group', 'sets', 'reps', 'image', 'first_exercise', 'second_exercise', 'third_exercise', 'fourth_exercise', 'fifth_exercise', 'sixth_exercise', 'calories_burned')
+        fields = ('muscle_group', 'sets', 'reps', 'image', 'exercise', 'calories_burned')
 
 
 class AddExerciseForm(BaseExerciseForm):

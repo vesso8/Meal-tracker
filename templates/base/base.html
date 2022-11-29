@@ -25,9 +25,11 @@
                 {% if request.user|has_group:"Staff" or request.user|has_group:"Administrator" %}
                     <li><a href="{% url 'add menu' %}">Add Menu</a></li>
                     <li><a href="{% url 'add exercise' %}">Add Exercise</a></li>
+                    <li><a href="{% url 'exercises' %}">Exercises</a></li>
+                    <li><a href="{% url 'user details' user.id %}">Profile</a></li>
+                    <li class="right nav_li"><a href="{% url 'logout' %}">Logout</a></li>
 
-                {% endif %}
-                {% if request.user.is_authenticated %}
+                {% elif request.user.is_authenticated and not request.user|has_group:"Staff" and not request.user|has_group:"Administrator"%}
                     <li><a href="{% url 'exercises' %}">Exercises</a></li>
                     <li><a href="{% url 'select food' %}">Select Food</a></li>
                     <li><a href="{% url 'add food' %}">Add Food</a></li>

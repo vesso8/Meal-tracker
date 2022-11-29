@@ -11,6 +11,7 @@
 
 
                         {{ form }}
+                        {{ error }}
                         {% csrf_token %}
 
                         <button class="add-food" type="submit">Select</button>
@@ -35,7 +36,7 @@
                 <tr>
                 {% if food.available_quantity %}
 
-                    {% if food.quantity_units == '(n)' %}
+                    {% if food.quantity_units == '(per piece)' %}
                         <td>{{ food.name }} </td>
                     {% else %}
                         <td>{{ food.name }} {{ food.quantity_units }}</td>

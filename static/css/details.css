@@ -13,7 +13,8 @@
     height: 420px;
     width: 1000px;
     border-radius: 7px 7px 7px 7px;
-    background-color: darkseagreen;
+    background-color: #8FBC8F;
+    background-image: linear-gradient(150deg, darkseagreen 50%, #809063 100%);
     box-shadow: 0 0 15px 0;
     /*box-shadow: 0 0 1.5px 3px gray;*/
     margin: 30px auto 200px;
