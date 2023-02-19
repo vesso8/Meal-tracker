@@ -6,5 +6,3 @@ Unauthenticated users can see some sample menus that the admin has decided to su
 
 Staff can add and edit menus.
 Administrators have full control of the application.
-
-Deployed on Heroku: https://meal-tracker-django.herokuapp.com/
